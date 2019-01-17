@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb2d;
     private int count;
+    private bool lose;
 
     private void Start()
     {
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
         count = 0;
         winText.text = "";
         setCountText();
+        lose = false;
     }
 
     private void FixedUpdate()
@@ -39,13 +41,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            lose = true;
+            setCountText();
+        }
+    }
+
     void setCountText()
     {
 
         countText.text = "Count: " + count.ToString();
-        if (count >= 12)
+        if (count >= 16)
         {
             winText.text = "You Win!";
+        }
+        else if (lose)
+        {
+            winText.text = "You Lose :(";
         }
     }
 }
